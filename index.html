@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>MeeeetUp 営業実績・戦略資料 — デライトV向け草案</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --main: #2c74bb;
+    --sub: #12a5d8;
+    --dark: #0b2948;
+    --light: #f3f7fb;
+    --gray: #667a8c;
+    --border: #dbe4ee;
+    --accent: #ff7a1a;
+    --green: #2ca37a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: #e9eef4;
+    color: var(--dark);
+    -webkit-font-smoothing: antialiased;
+  }
+  body { padding: 20px 0; }
+  .slide-wrap {
+    width: min(1920px, calc(100vw - 40px));
+    height: calc(min(1920px, calc(100vw - 40px)) * 1080 / 1920);
+    margin: 0 auto 24px auto;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(11,41,72,0.18);
+    background: #fff;
+  }
+  .slide {
+    width: 1920px;
+    height: 1080px;
+    transform-origin: top left;
+    transform: scale(calc(min(1920px, 100vw - 40px) / 1920px));
+    overflow: hidden;
+    background: #fff;
+    position: relative;
+  }
+  .slide-header {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 12px;
+    background: linear-gradient(90deg, var(--main) 0%, var(--sub) 100%);
+  }
+  .slide-footer {
+    position: absolute;
+    bottom: 28px; left: 80px; right: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 22px;
+    color: var(--gray);
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+  .slide-footer .brand { font-weight: 700; color: var(--main); }
+  .slide-title {
+    position: absolute;
+    top: 80px; left: 80px; right: 80px;
+    font-size: 52px;
+    font-weight: 900;
+    color: var(--dark);
+    border-left: 12px solid var(--main);
+    padding-left: 28px;
+    line-height: 1.2;
+  }
+  .slide-subtitle {
+    position: absolute;
+    top: 170px; left: 120px; right: 80px;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--gray);
+  }
+  .slide-body {
+    position: absolute;
+    top: 240px; left: 80px; right: 80px; bottom: 110px;
+  }
+
+  /* ===== Cover slide ===== */
+  .cover {
+    background: linear-gradient(135deg, #0b2948 0%, #1a4d82 60%, #2c74bb 100%);
+    color: #fff;
+  }
+  .cover .cover-label {
+    position: absolute;
+    top: 340px; left: 160px;
+    font-size: 28px;
+    letter-spacing: 6px;
+    color: #9fd2ef;
+    border: 2px solid #9fd2ef;
+    padding: 14px 32px;
+    display: inline-block;
+  }
+  .cover .cover-title {
+    position: absolute;
+    top: 430px; left: 160px; right: 160px;
+    font-size: 92px;
+    font-weight: 900;
+    line-height: 1.15;
+    color: #fff;
+  }
+  .cover .cover-lead {
+    position: absolute;
+    top: 720px; left: 160px; right: 160px;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: #d3e6f6;
+  }
+  .cover .cover-brand {
+    position: absolute;
+    bottom: 100px; left: 160px;
+    font-size: 26px;
+    color: #9fd2ef;
+  }
+  .cover .cover-brand strong { color: #fff; font-weight: 900; font-size: 32px; display: block; margin-top: 6px; }
+
+  /* ===== Section divider ===== */
+  .divider {
+    background: linear-gradient(135deg, var(--main) 0%, var(--sub) 100%);
+    color: #fff;
+  }
+
+  /* ===== Common blocks ===== */
+  .kpi-row { display: flex; gap: 40px; margin-top: 10px; }
+  .kpi-box {
+    flex: 1;
+    background: var(--light);
+    border-top: 6px solid var(--main);
+    padding: 40px 36px;
+    border-radius: 4px;
+  }
+  .kpi-box .label { font-size: 24px; color: var(--gray); font-weight: 500; margin-bottom: 16px; }
+  .kpi-box .value { font-size: 72px; font-weight: 900; color: var(--main); line-height: 1; }
+  .kpi-box .unit { font-size: 32px; font-weight: 700; color: var(--main); margin-left: 8px; }
+  .kpi-box .note { font-size: 20px; color: var(--gray); margin-top: 16px; line-height: 1.5; }
+
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 24px;
+    background: #fff;
+  }
+  table.data-table th {
+    background: var(--dark);
+    color: #fff;
+    text-align: left;
+    padding: 18px 24px;
+    font-weight: 700;
+    border: 1px solid var(--dark);
+  }
+  table.data-table td {
+    padding: 16px 24px;
+    border: 1px solid var(--border);
+    color: var(--dark);
+  }
+  table.data-table tr:nth-child(even) td { background: #f7fafd; }
+  table.data-table .highlight { color: var(--main); font-weight: 900; }
+
+  .two-col { display: flex; gap: 40px; height: 100%; }
+  .two-col > div { flex: 1; }
+
+  .message-bar {
+    position: absolute;
+    bottom: 110px; left: 80px; right: 80px;
+    background: var(--main);
+    color: #fff;
+    padding: 28px 44px;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  /* ===== Quadrant ===== */
+  .quadrant {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 24px;
+    height: 100%;
+    padding-left: 100px;
+    padding-top: 40px;
+  }
+  .quadrant .q-cell {
+    background: var(--light);
+    border: 2px solid var(--border);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 6px;
+  }
+  .quadrant .q-cell .q-axis { font-size: 28px; color: var(--gray); margin-bottom: 16px; }
+  .quadrant .q-cell .q-example { font-size: 34px; font-weight: 700; color: var(--dark); }
+  .quadrant .q-cell.target {
+    background: linear-gradient(135deg, var(--main) 0%, var(--sub) 100%);
+    border: none;
+    color: #fff;
+    box-shadow: 0 12px 32px rgba(44,116,187,0.4);
+  }
+  .quadrant .q-cell.target .q-axis { color: #bde1f2; }
+  .quadrant .q-cell.target .q-example { color: #fff; font-size: 42px; }
+  .quadrant .q-cell.target .q-mark { font-size: 24px; color: #ffe57a; margin-top: 12px; letter-spacing: 4px; }
+
+  /* ===== 6 use case grid ===== */
+  .usecase-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    height: 100%;
+  }
+  .usecase-cell {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-left: 10px solid var(--main);
+    padding: 34px 36px;
+    display: flex;
+    flex-direction: column;
+  }
+  .usecase-cell.l2 { border-left-color: var(--sub); }
+  .usecase-cell .uc-layer { font-size: 18px; color: var(--main); font-weight: 700; letter-spacing: 2px; }
+  .usecase-cell.l2 .uc-layer { color: var(--sub); }
+  .usecase-cell .uc-title { font-size: 32px; font-weight: 900; color: var(--dark); margin: 12px 0 16px; }
+  .usecase-cell .uc-desc { font-size: 20px; color: var(--gray); line-height: 1.6; flex: 1; }
+  .usecase-cell .uc-som { font-size: 26px; font-weight: 900; color: var(--main); margin-top: 16px; }
+  .usecase-cell.l2 .uc-som { color: var(--sub); }
+
+  /* ===== Pipeline ===== */
+  .pipeline-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; margin-bottom: 40px;
+  }
+  .pipeline-stats .stat {
+    background: var(--light); border-top: 6px solid var(--main); padding: 32px;
+  }
+  .pipeline-stats .stat .n { font-size: 64px; font-weight: 900; color: var(--main); line-height: 1; }
+  .pipeline-stats .stat .l { font-size: 22px; color: var(--gray); margin-top: 10px; }
+
+  /* ===== Regulation ===== */
+  .reg-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .reg-card {
+    background: var(--light); padding: 28px; border-left: 6px solid var(--accent);
+  }
+  .reg-card .r-name { font-size: 26px; font-weight: 900; color: var(--dark); }
+  .reg-card .r-date { font-size: 22px; color: var(--accent); font-weight: 700; margin: 8px 0; }
+  .reg-card .r-desc { font-size: 19px; color: var(--gray); line-height: 1.5; }
+
+  .compliance-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 30px; }
+  .comp-item {
+    background: #fff; border: 2px solid var(--border); padding: 24px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .comp-item .c-name { font-size: 24px; font-weight: 700; color: var(--dark); }
+  .comp-item .c-amount { font-size: 28px; font-weight: 900; color: var(--accent); }
+
+  /* ===== 3 phase ===== */
+  .phases { display: flex; gap: 28px; height: 80%; margin-top: 20px; }
+  .phase {
+    flex: 1;
+    background: var(--light); padding: 40px 32px;
+    border-top: 8px solid var(--border);
+    display: flex; flex-direction: column;
+  }
+  .phase.current { border-top-color: var(--main); background: #e7f1fa; box-shadow: 0 8px 24px rgba(44,116,187,0.18); }
+  .phase .ph-num { font-size: 22px; color: var(--gray); letter-spacing: 3px; font-weight: 700; }
+  .phase .ph-title { font-size: 36px; font-weight: 900; color: var(--dark); margin: 8px 0 4px; }
+  .phase .ph-period { font-size: 22px; color: var(--main); font-weight: 700; margin-bottom: 20px; }
+  .phase.current .ph-period { color: var(--accent); }
+  .phase ul { list-style: none; }
+  .phase ul li {
+    font-size: 20px; color: var(--dark); line-height: 1.6; padding-left: 24px; position: relative; margin-bottom: 12px;
+  }
+  .phase ul li::before {
+    content: ''; position: absolute; left: 0; top: 12px; width: 12px; height: 12px; background: var(--main); border-radius: 50%;
+  }
+  .phase.current ul li::before { background: var(--accent); }
+
+  /* ===== Case list ===== */
+  .case-table { width: 100%; border-collapse: separate; border-spacing: 0 12px; font-size: 24px; }
+  .case-table tr td {
+    background: var(--light); padding: 20px 28px;
+  }
+  .case-table tr td:first-child { border-left: 6px solid var(--main); font-weight: 900; color: var(--dark); width: 260px; }
+  .case-table tr td:nth-child(2) { color: var(--gray); }
+  .case-table tr td:last-child { color: var(--main); font-weight: 900; text-align: right; }
+
+  /* ===== ICP / Scope ===== */
+  .icp-cols { display: flex; gap: 36px; height: 100%; }
+  .icp-col {
+    flex: 1;
+    background: var(--light); padding: 40px 36px;
+    border-top: 6px solid var(--main);
+  }
+  .icp-col.anti { border-top-color: var(--accent); }
+  .icp-col h3 { font-size: 32px; font-weight: 900; color: var(--dark); margin-bottom: 24px; }
+  .icp-col.anti h3 { color: var(--accent); }
+  .icp-col ul { list-style: none; }
+  .icp-col li {
+    font-size: 22px; color: var(--dark); padding: 14px 0 14px 40px; position: relative; line-height: 1.6;
+    border-bottom: 1px solid var(--border);
+  }
+  .icp-col li:last-child { border-bottom: none; }
+  .icp-col li::before {
+    content: '✓'; position: absolute; left: 0; top: 14px; color: var(--main); font-weight: 900; font-size: 24px;
+  }
+  .icp-col.anti li::before { content: '✗'; color: var(--accent); }
+
+  /* ===== Upsell slides ===== */
+  .upsell-stage {
+    padding: 40px; border-radius: 4px; display: flex; flex-direction: column;
+  }
+  .upsell-stage.day1 { background: var(--light); border-left: 10px solid var(--main); }
+  .upsell-stage.upsell { background: linear-gradient(135deg, #1a4d82 0%, #2c74bb 100%); color: #fff; }
+  .upsell-stage .st-label { font-size: 22px; letter-spacing: 3px; font-weight: 700; }
+  .upsell-stage.day1 .st-label { color: var(--main); }
+  .upsell-stage.upsell .st-label { color: #9fd2ef; }
+  .upsell-stage .st-title { font-size: 38px; font-weight: 900; margin: 12px 0 24px; }
+  .upsell-stage.day1 .st-title { color: var(--dark); }
+  .upsell-stage.upsell .st-title { color: #fff; }
+  .upsell-stage ul { list-style: none; }
+  .upsell-stage ul li {
+    font-size: 22px; line-height: 1.7; padding-left: 28px; position: relative; margin-bottom: 14px;
+  }
+  .upsell-stage.day1 ul li { color: var(--dark); }
+  .upsell-stage.day1 ul li::before { content: '▸'; position: absolute; left: 0; color: var(--main); font-weight: 900; }
+  .upsell-stage.upsell ul li { color: #e9f4fc; }
+  .upsell-stage.upsell ul li::before { content: '▸'; position: absolute; left: 0; color: #ffe57a; font-weight: 900; }
+  .upsell-stage .kicker {
+    margin-top: auto; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.25);
+    font-size: 22px; line-height: 1.6;
+  }
+  .upsell-stage.day1 .kicker { border-top-color: var(--border); color: var(--gray); }
+  .upsell-stage.upsell .kicker { color: #c9e7f5; }
+
+  .purpose-banner {
+    background: linear-gradient(90deg, #0b2948 0%, #2c74bb 100%);
+    color: #fff;
+    padding: 28px 40px;
+    margin-bottom: 32px;
+    border-left: 10px solid #ffe57a;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  .purpose-banner .p-label {
+    font-size: 22px;
+    letter-spacing: 4px;
+    color: #ffe57a;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .purpose-banner .p-text {
+    font-size: 30px;
+    font-weight: 900;
+    line-height: 1.4;
+  }
+  .upsell-flow-with-purpose { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; height: calc(100% - 120px); }
+  .upsell-stage .st-layer {
+    display: inline-block;
+    font-size: 16px;
+    letter-spacing: 3px;
+    font-weight: 900;
+    padding: 4px 12px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+  }
+  .upsell-stage.day1 .st-layer { background: var(--main); color: #fff; }
+  .upsell-stage.upsell .st-layer { background: #ffe57a; color: #0b2948; }
+
+  /* ===== Placeholder ===== */
+  .placeholder-box {
+    background: repeating-linear-gradient(45deg, #f3f7fb, #f3f7fb 20px, #e6eef6 20px, #e6eef6 40px);
+    border: 3px dashed var(--main);
+    padding: 60px;
+    text-align: center;
+    color: var(--main);
+    font-size: 28px;
+    font-weight: 700;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .placeholder-box .ph-label { font-size: 22px; color: var(--gray); margin-bottom: 16px; letter-spacing: 3px; }
+
+  /* ===== GTM ===== */
+  .gtm-tracks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .gtm-track {
+    background: #fff; border: 2px solid var(--border); padding: 40px 36px;
+    text-align: center;
+  }
+  .gtm-track .num {
+    width: 80px; height: 80px; background: var(--main); color: #fff; border-radius: 50%;
+    font-size: 40px; font-weight: 900; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+  }
+  .gtm-track .t { font-size: 28px; font-weight: 900; color: var(--dark); margin-bottom: 14px; }
+  .gtm-track .d { font-size: 20px; color: var(--gray); line-height: 1.6; }
+
+  /* ===== Equation ===== */
+  .equation {
+    background: linear-gradient(135deg, #0b2948 0%, #2c74bb 100%);
+    color: #fff;
+    padding: 60px;
+    text-align: center;
+    border-radius: 6px;
+  }
+  .equation .eq-label { font-size: 24px; color: #9fd2ef; letter-spacing: 4px; margin-bottom: 20px; }
+  .equation .eq-formula { font-size: 60px; font-weight: 900; line-height: 1.4; }
+  .equation .eq-formula .op { color: #ffe57a; margin: 0 16px; }
+
+  /* ===== Closing recap boxes ===== */
+  .recap-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr 1fr;
+    gap: 22px;
+    height: 100%;
+  }
+  .recap-box {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 26px 28px;
+    border-radius: 4px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+  }
+  .recap-box .r-num {
+    font-size: 18px;
+    letter-spacing: 3px;
+    color: #ffe57a;
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+  .recap-box .r-title {
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+  .recap-box .r-body {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #d3e6f6;
+    flex: 1;
+  }
+  .recap-box .r-kicker {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.18);
+    font-size: 16px;
+    color: #9fd2ef;
+    font-weight: 700;
+  }
+
+  /* ===== Cluster visualization ===== */
+  .cluster-wrap {
+    background: var(--light);
+    padding: 40px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .cluster-wrap .cw-title {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--main);
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+  .cluster-area {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    flex: 1;
+  }
+  .cluster-col { text-align: center; position: relative; }
+  .cluster-col .c-area {
+    font-size: 18px;
+    color: var(--gray);
+    letter-spacing: 2px;
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+  .cluster-col .c-hub {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--dark);
+    margin-bottom: 14px;
+  }
+  .cluster-col svg { width: 100%; max-width: 360px; height: 260px; }
+  .cluster-col .c-note {
+    font-size: 14px;
+    color: var(--gray);
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+  .routes-engine {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .routes-engine .re-item {
+    flex: 1;
+    background: #fff;
+    border: 2px solid var(--border);
+    border-left: 6px solid var(--accent);
+    padding: 16px 20px;
+    font-size: 16px;
+    color: var(--dark);
+    line-height: 1.5;
+  }
+  .routes-engine .re-item strong { color: var(--accent); font-size: 17px; display: block; margin-bottom: 4px; }
+
+  /* Nav */
+  .nav-index {
+    position: fixed;
+    right: 20px; bottom: 20px;
+    background: rgba(11,41,72,0.92); color: #fff; padding: 14px 20px; border-radius: 6px;
+    font-size: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== Slide 01: Cover ========== -->
+<div class="slide-wrap"><div class="slide cover">
+  <div class="cover-label">シードラウンド補助資料</div>
+  <div class="cover-title">営業実績と事業戦略</div>
+  <div class="cover-brand">
+    MeeeetUp 株式会社 / 代表取締役
+    <strong>髙橋 一矢</strong>
+  </div>
+</div></div>
+
+<!-- ========== Slide 02: Prior Art ① Layer 1 ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">先行事例 ①　Layer 1 ／ 入口・受付の効果</div>
+  <div class="slide-subtitle">Layer 1 の価値は "時間を返すこと" ── 他社で実証済み</div>
+  <div class="slide-body">
+    <table class="case-table">
+      <tbody>
+        <tr><td>PopID</td><td>小売決済</td><td>チェックアウト 最大90秒/取引 短縮</td></tr>
+        <tr><td>Toss FacePay</td><td>決済認証</td><td>約1秒／精度 99.99%</td></tr>
+        <tr><td>PayByFace</td><td>欧州決済</td><td>1秒未満／ジオロケーション付き</td></tr>
+        <tr><td>fielddrive</td><td>イベント受付</td><td>顔認証3秒＋バッジ印刷6秒 ＝ 9秒</td></tr>
+        <tr><td>InEvent</td><td>イベント受付</td><td>最大 70% 短縮／2,000人規模</td></tr>
+        <tr><td>FlyZoo Hotel</td><td>ホテルCI</td><td>3分 → 1分未満（67% 短縮）</td></tr>
+        <tr><td>Marriott 中国</td><td>ホテル全国</td><td>6,500 施設展開／3分 → 1分未満</td></tr>
+        <tr><td>NADRA Pak ID</td><td>ビザ処理</td><td>処理時間 50% 削減</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="message-bar">オペレーション自動化は、コスト削減と顧客体験向上を同時に実現する</div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>02 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 03: Prior Art ② Layer 2 ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">先行事例 ②　Layer 2 ／ リアル空間データ活用による売上向上</div>
+  <div class="slide-subtitle">Layer 2 の真価は "個客識別による LTV 向上"</div>
+  <div class="slide-body">
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;">
+      <div class="kpi-box"><div class="label">Alibaba Freshippo　坪効率</div><div class="value">5<span class="unit">倍</span></div><div class="note">従来型スーパー比／GMV 1.2 兆円</div></div>
+      <div class="kpi-box"><div class="label">Bizzabo Klik × CCW　出展者リード数</div><div class="value">+315<span class="unit">%</span></div><div class="note">イベントアップセルの直接的裏付け</div></div>
+      <div class="kpi-box"><div class="label">Alibaba レコメンド　CV 率</div><div class="value">+25<span class="unit">%</span></div><div class="note">クリック率 +30%</div></div>
+      <div class="kpi-box"><div class="label">Accenture　購入意欲向上</div><div class="value">91<span class="unit">%</span></div><div class="note">パーソナライズ提供時</div></div>
+      <div class="kpi-box"><div class="label">PopID　客単価</div><div class="value">+4.5<span class="unit">%</span></div><div class="note">小売決済での効果</div></div>
+      <div class="kpi-box"><div class="label">BI Intelligence　小売収益性 2035</div><div class="value">+60<span class="unit">%</span></div><div class="note">データ活用型小売</div></div>
+    </div>
+  </div>
+  <div class="message-bar">Alibaba・Bizzabo・PopID が既に Layer 2 経済圏を証明済み。MeeeetUp は日本市場から再現する。</div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>03 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 04: Why Now ① Macro ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">Why Now ①　マクロトレンド</div>
+  <div class="slide-subtitle">リアルに需要が戻り、オンラインは限界に達した</div>
+  <div class="slide-body">
+    <div class="kpi-row">
+      <div class="kpi-box">
+        <div class="label">社外向け消費者イベント予算</div>
+        <div class="value">+50<span class="unit">%</span></div>
+        <div class="note">JTB ビジネスイベント調査</div>
+      </div>
+      <div class="kpi-box" style="border-top-color: var(--accent);">
+        <div class="label">イベント主催者アンケート<br>「成功の鍵は参加者データ」と回答</div>
+        <div class="value" style="color: var(--accent);">88<span class="unit" style="color: var(--accent);">%</span></div>
+        <div class="note">Bizzabo 2023 ／ 主催者回答率</div>
+      </div>
+      <div class="kpi-box">
+        <div class="label">イベントマーケティング<br>オフライン予算配分</div>
+        <div class="value">1<span class="unit">位</span></div>
+        <div class="note">Gartner CMO Survey 2023 ／ リアル回帰の構造的な根拠</div>
+      </div>
+    </div>
+    <div class="kpi-row" style="margin-top: 40px;">
+      <div class="kpi-box">
+        <div class="label">オンライン広告 CPC（クリック単価）<br>2020 → 2026</div>
+        <div class="value">+53<span class="unit">%</span></div>
+        <div class="note">Gartner / KWM / LTV-Lab</div>
+      </div>
+      <div class="kpi-box">
+        <div class="label">オンライン広告の構造疲弊<br>3 大要因</div>
+        <div class="value" style="font-size: 26px; line-height: 1.6; font-weight: 900;">
+          ・Cookie 廃止<br>
+          ・Ad Fatigue<br>
+          ・オークション競争
+        </div>
+        <div class="note">Cookie 廃止でターゲティング精度低下／広告疲れで CVR 低下／競争激化で CPA 悪化</div>
+      </div>
+    </div>
+  </div>
+  <div class="message-bar">企業はリアル接点に活路を求めている ── しかしリアル空間は「データの空白地帯」</div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>04 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 05: Why Now ② Regulation ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">Why Now ②　規制強化とコンプライアンス負債</div>
+  <div class="slide-subtitle">2026年、世界同期で規制が強化される。既存プレイヤーは過去データを巻き戻す</div>
+  <div class="slide-body">
+    <div class="reg-cards">
+      <div class="reg-card">
+        <div class="r-name">日本改正個情法</div>
+        <div class="r-date">2026年</div>
+        <div class="r-desc">オプトアウト禁止／課徴金導入／利用停止要件緩和</div>
+      </div>
+      <div class="reg-card">
+        <div class="r-name">EU AI Act 全面施行</div>
+        <div class="r-date">2026年8月</div>
+        <div class="r-desc">禁止行為4類型／€35M（約58億円）or 売上7%制裁</div>
+      </div>
+      <div class="reg-card">
+        <div class="r-name">米国州法拡大</div>
+        <div class="r-date">2026年〜</div>
+        <div class="r-desc">NYC BII強化案／NY州 S1422 法案</div>
+      </div>
+      <div class="reg-card">
+        <div class="r-name">中国 PIPL 執行強化</div>
+        <div class="r-date">継続</div>
+        <div class="r-desc">10万人届出／5,000万元（約10億円）罰則</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 50px; text-align: center; font-size: 28px; font-weight: 900; color: var(--accent); letter-spacing: 2px;">
+      米国 BIPA 系和解総額　約 $1.48B（約 2,220 億円）
+    </div>
+    <div class="compliance-list">
+      <div class="comp-item">
+        <div class="c-name">Meta（Tag Suggestions）／10億人分の顔テンプレート削除</div>
+        <div class="c-amount">$1.4B</div>
+      </div>
+      <div class="comp-item">
+        <div class="c-name">Clearview AI ／事業モデル崩壊進行中</div>
+        <div class="c-amount">$51.75M</div>
+      </div>
+      <div class="comp-item">
+        <div class="c-name">Biostar 2（Suprema）／顔・指紋生データ流出</div>
+        <div class="c-amount">2,780万件</div>
+      </div>
+      <div class="comp-item">
+        <div class="c-name">郭兵訴杭州野生動物園／顔データ削除命令判決</div>
+        <div class="c-amount">中国 2021</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>05 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 06: Why Now ③ Phases ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">Why Now ③　Phase 2 の空白期間が MeeeetUp の勝ち筋</div>
+  <div class="slide-subtitle">規制強化で既存プレイヤーが過去データを巻き戻すいま、適正取得型が ID を積み上げる</div>
+  <div class="slide-body">
+    <div class="phases">
+      <div class="phase">
+        <div class="ph-num">PHASE 1</div>
+        <div class="ph-title">自由拡張期</div>
+        <div class="ph-period">〜 2025</div>
+        <ul>
+          <li>Meta・Google 等が同意設計の甘さで成長</li>
+          <li>規制当局が追いつかず先発優位</li>
+          <li>実証実験と大規模運用が同時進行</li>
+        </ul>
+      </div>
+      <div class="phase current">
+        <div class="ph-num">PHASE 2　★現在</div>
+        <div class="ph-title">規制強化期</div>
+        <div class="ph-period">2026 〜 2029</div>
+        <ul>
+          <li>日本個情法／EU AI Act／米州法 が同期施行</li>
+          <li><strong>過去取得データの巻き戻しが開始</strong></li>
+          <li>コンプライアンス対応コスト急騰</li>
+          <li>既存プレイヤーは攻めから守りへ</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="ph-num">PHASE 3</div>
+        <div class="ph-title">再編・逆転期</div>
+        <div class="ph-period">2029 〜</div>
+        <ul>
+          <li>"使える ID 数" で事業者の序列が再編</li>
+          <li>適正取得型のプレイヤーが相対浮上</li>
+          <li>量から質へと評価軸が移動</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="message-bar">MeeeetUp は Phase 2 の空白期間にライトな共通 ID を積み上げる</div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>06 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 07: System Design Risk Avoidance ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">システム設計によるリスク回避</div>
+  <div class="slide-subtitle">実用欠陥の本質は「テクノロジー」ではなく「設計」── 規制強化が追い風になる設計</div>
+  <div class="slide-body">
+    <table class="data-table">
+      <thead><tr><th style="width:22%">観点</th><th>中国モデル</th><th style="background:var(--main)">MeeeetUp</th></tr></thead>
+      <tbody>
+        <tr><td><strong>主語</strong></td><td>国家・企業</td><td class="highlight">ユーザー本人</td></tr>
+        <tr><td><strong>データ収集</strong></td><td>同意なし・一方的</td><td class="highlight">オプトイン・明示的同意</td></tr>
+        <tr><td><strong>生体データの保持</strong></td><td>サーバーに顔画像を保存</td><td class="highlight">自社では生体データを保持しない設計</td></tr>
+        <tr><td><strong>データ用途</strong></td><td>監視・管理</td><td class="highlight">本人のための認証・パーソナライズ</td></tr>
+        <tr><td><strong>ユーザーの立場</strong></td><td>データの「対象」</td><td class="highlight">データの「主体・管理者」</td></tr>
+        <tr><td><strong>規制との関係</strong></td><td>規制で事業が制限される</td><td class="highlight">規制強化が追い風になる設計</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top: 32px; background: var(--light); padding: 28px 36px; border-left: 8px solid var(--main);">
+      <div style="font-size: 24px; font-weight: 900; color: var(--main); margin-bottom: 12px;">なぜ構造的に安全なのか</div>
+      <div style="font-size: 20px; color: var(--dark); line-height: 1.8;">
+        ✓ 自社内に生体データを保持しない設計 ── 漏洩・悪用の起点を持たない<br>
+        ✓ 明示的同意ベースで取得 ── Meta / Clearview 型のリスクが原理的に発生しない<br>
+        ✓ 分散型管理 ── 連携事業者で障害が発生しても、その影響範囲を最小限に留める設計
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>07 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 08: Use Case Risk Avoidance = Quadrant ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">ユースケースによるリスク回避</div>
+  <div class="slide-subtitle">対面性と認可の重さで市場を分解する際の MeeeetUp の戦場</div>
+  <div class="slide-body">
+    <div class="quadrant" style="padding-left: 0; padding-top: 0;">
+      <div class="q-cell">
+        <div class="q-axis">リアル対面 × 重認可</div>
+        <div class="q-example">決済・国境・医療</div>
+      </div>
+      <div class="q-cell target">
+        <div class="q-axis">リアル対面 × 軽認可</div>
+        <div class="q-example">MeeeetUp</div>
+      </div>
+      <div class="q-cell">
+        <div class="q-axis">オンライン × 重認可</div>
+        <div class="q-example">KYC / eKYC</div>
+      </div>
+      <div class="q-cell">
+        <div class="q-axis">オンライン × 軽認可</div>
+        <div class="q-example">ディープフェイク脆弱</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>08 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 09: Scope Definition ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">スコープ定義　リアル対面 × 軽認可 の本人認証</div>
+  <div class="slide-subtitle">本人認証はゴールではなく、データのエントリーポイント</div>
+  <div class="slide-body">
+    <div class="icp-cols">
+      <div class="icp-col">
+        <h3>狙う条件（全て満たす）</h3>
+        <ul>
+          <li>現実空間・リアル対面での本人認証<br><span style="font-size:18px;color:var(--gray)">現実環境に限定することで、成りすまし等が原理的に発生しづらい</span></li>
+          <li>巨額の資金・設備を必要としない<br><span style="font-size:18px;color:var(--gray)">物理ゲート不要・建築工事不要</span></li>
+          <li>専用デバイスを必要としない<br><span style="font-size:18px;color:var(--gray)">既存スマホ／タブレット／PC カメラで完結、初期投資ゼロ</span></li>
+          <li>認可の重大責任を伴わない<br><span style="font-size:18px;color:var(--gray)">誤認証が重大な人的・財務的被害を生まない</span></li>
+          <li>本人認証を <strong>データのエントリーポイント</strong> として設計できる</li>
+        </ul>
+      </div>
+      <div class="icp-col anti">
+        <h3>狙わない条件（絶対に売らない領域）</h3>
+        <ul>
+          <li><strong>オンラインでの本人認証</strong><br><span style="font-size:18px;color:var(--gray)">ディープフェイク等のなりすまし対応が構造的に困難</span></li>
+          <li>資金移動・決済の本人確認</li>
+          <li>入出国管理</li>
+          <li>重要セキュリティエリアの入出許可</li>
+          <li>誤認証が重大な人的・財務的被害を生む領域</li>
+        </ul>
+        <div style="margin-top: 28px; font-size: 19px; color: var(--dark); line-height: 1.75; background:#fff; padding: 22px; border: 2px solid var(--accent);">
+          <strong style="color: var(--accent); font-size: 22px; display: block; margin-bottom: 10px;">なぜ触れないか</strong>
+          ・導入までの意思決定が重く、時間がかかる<br>
+          ・規制強化の直撃を受け、今後の導入ハードルが上がる<br>
+          ・ディープフェイク等の発展技術の悪用により、追加のテクノロジー開発コストと時間が必要<br>
+          ・誤認証の重大責任により、導入スピードを構造的に下げる
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>09 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 10: Winning Formula ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">スタートアップとしての勝ち筋</div>
+  <div class="slide-subtitle">大手が入れない領域で、ID 数の獲得スピードで勝つ</div>
+  <div class="slide-body">
+    <div class="two-col" style="height: auto;">
+      <div style="background:#f3f7fb;padding:28px 32px;border-top:6px solid var(--gray);">
+        <div style="font-size:24px;color:var(--gray);font-weight:900;margin-bottom:12px;text-align:center;">大手の狙い方</div>
+        <ul style="list-style:none;">
+          <li style="font-size:19px;padding-left:22px;position:relative;line-height:1.6;color:var(--dark);margin-bottom:4px;">・大型アンカー案件（空港・政府・重要施設）</li>
+          <li style="font-size:19px;padding-left:22px;position:relative;line-height:1.6;color:var(--dark);margin-bottom:4px;">・一人あたり利用回数が多い（決済・改札）</li>
+          <li style="font-size:19px;padding-left:22px;position:relative;line-height:1.6;color:var(--dark);margin-bottom:4px;">・重い意思決定プロセス ― 導入まで 1〜3 年</li>
+          <li style="font-size:19px;padding-left:22px;position:relative;line-height:1.6;color:var(--dark);">→ <strong>案件あたり大きいがスピードが遅い</strong></li>
+        </ul>
+      </div>
+      <div style="background:linear-gradient(135deg,var(--main),var(--sub));color:#fff;padding:28px 32px;">
+        <div style="font-size:24px;color:#c9e7f5;font-weight:900;margin-bottom:12px;text-align:center;">MeeeetUp の狙い方</div>
+        <ul style="list-style:none;">
+          <li style="font-size:19px;padding-left:22px;position:relative;line-height:1.6;color:#fff;margin-bottom:4px;">・手軽な本人認証の現場（イベント・パチンコ）</li>
+          <li style="font-size:19px;padding-left:22px;position:relative;line-height:1.6;color:#fff;margin-bottom:4px;">・大人数が一気に利用（展示会 2,370 万人）</li>
+          <li style="font-size:19px;padding-left:22px;position:relative;line-height:1.6;color:#fff;margin-bottom:4px;">・汎用カメラで導入摩擦低</li>
+          <li style="font-size:19px;padding-left:22px;position:relative;line-height:1.6;color:#fff;">→ <strong>顔 ID 数の獲得スピードは圧倒的に速い</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:32px;">
+      <div style="background:#fff;border:2px solid var(--border);border-top:6px solid var(--main);padding:28px 30px;">
+        <div style="font-size:22px;font-weight:900;color:var(--dark);text-align:center;padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:16px;">戦略・設計</div>
+        <ul style="list-style:none;">
+          <li style="font-size:17px;padding-left:20px;position:relative;line-height:1.6;color:var(--dark);margin-bottom:8px;">▸ 対面オフライン特化でディープフェイク耐性</li>
+          <li style="font-size:17px;padding-left:20px;position:relative;line-height:1.6;color:var(--dark);margin-bottom:8px;">▸ 適正同意ベースの設計</li>
+          <li style="font-size:17px;padding-left:20px;position:relative;line-height:1.6;color:var(--dark);margin-bottom:8px;">▸ ブラックボックス化 + 鍵・DB 分散</li>
+          <li style="font-size:17px;padding-left:20px;position:relative;line-height:1.6;color:var(--dark);margin-bottom:8px;">▸ UUID ベースの MeeeetUp ID 運用</li>
+          <li style="font-size:17px;padding-left:20px;position:relative;line-height:1.6;color:var(--dark);">▸ 認可軽ユースケースへの絞り込み</li>
+        </ul>
+      </div>
+      <div style="background:#fff;border:2px solid var(--border);border-top:6px solid var(--sub);padding:28px 30px;">
+        <div style="font-size:22px;font-weight:900;color:var(--dark);text-align:center;padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:16px;">UX・プロダクト</div>
+        <ul style="list-style:none;">
+          <li style="font-size:17px;padding-left:20px;position:relative;line-height:1.6;color:var(--dark);margin-bottom:8px;">▸ 30 秒登録・身分証不要</li>
+          <li style="font-size:17px;padding-left:20px;position:relative;line-height:1.6;color:var(--dark);margin-bottom:8px;">▸ 汎用カメラで完結（専用端末不要）</li>
+          <li style="font-size:17px;padding-left:20px;position:relative;line-height:1.6;color:var(--dark);">▸ 導入摩擦が構造的に低い</li>
+        </ul>
+      </div>
+      <div style="background:#fff;border:2px solid var(--border);border-top:6px solid var(--main);padding:28px 30px;">
+        <div style="font-size:22px;font-weight:900;color:var(--dark);text-align:center;padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:16px;">市場戦略</div>
+        <ul style="list-style:none;">
+          <li style="font-size:17px;padding-left:20px;position:relative;line-height:1.6;color:var(--dark);margin-bottom:8px;">▸ 大人数が一回利用する領域に入る</li>
+          <li style="font-size:17px;padding-left:20px;position:relative;line-height:1.6;color:var(--dark);margin-bottom:8px;">▸ 中小・商業空間・地方への到達力</li>
+          <li style="font-size:17px;padding-left:20px;position:relative;line-height:1.6;color:var(--dark);margin-bottom:8px;">▸ 共通 ID × ソフト型：業界唯一</li>
+          <li style="font-size:17px;padding-left:20px;position:relative;line-height:1.6;color:var(--dark);">▸ 一貫したプロダクト設計思想</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="equation" style="margin-top: 28px; padding: 32px;">
+      <div class="eq-label" style="font-size:20px;margin-bottom:12px;">勝ち筋の数式</div>
+      <div class="eq-formula" style="font-size:44px;">(大人数) <span class="op">×</span> (低摩擦導入) <span class="op">×</span> (速いクローズ) <span class="op">=</span> ユーザー ID・データ獲得</div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>10 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 11: Pipeline Overview ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">パイプライン全景</div>
+  <div class="slide-subtitle">見込金額 約 46.65 億円 ／ 年間認証回数 約 3.69 億回</div>
+  <div class="slide-body">
+    <div class="pipeline-stats">
+      <div class="stat"><div class="n">50<span style="font-size:40px">+</span></div><div class="l">総案件数（重複含む）</div></div>
+      <div class="stat"><div class="n">27</div><div class="l">ユニーク企業数</div></div>
+      <div class="stat"><div class="n">46.65<span style="font-size:28px">億円</span></div><div class="l">パイプライン見込金額</div></div>
+      <div class="stat"><div class="n">9</div><div class="l">契約済み案件</div></div>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>ステージ</th><th>代表企業</th><th>主要ユースケース</th><th class="highlight">金額（千円）</th></tr></thead>
+      <tbody>
+        <tr><td>契約済み</td><td>STATION Ai / 静岡市 / LEO / 刈谷・安城・西尾 / ソフトバンク / シンフォニーM ほか</td><td>イベント受付・コワーキング</td><td class="highlight">3,390</td></tr>
+        <tr><td>最終交渉・意思決定</td><td>STATION Ai入館 / エル・ティー・エス / eiicon / 三菱UFJ ほか</td><td>受付＋回遊データ</td><td class="highlight">61,104</td></tr>
+        <tr><td>評価・選定</td><td>静岡銀行 / Headline Japan / Peatix / ブランシェ / Colorcon / 伊藤忠 / 愛知国際アリーナ / RX Japan / ファイターズ ほか</td><td>全Layer横断</td><td class="highlight">2,982,926</td></tr>
+        <tr><td>課題認識</td><td>日進市 / 静岡大 / 中京大 / 中部大 / J.フロント ほか</td><td>避難所・オープンキャンパス・百貨店</td><td class="highlight">529,094</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top: 36px; font-size: 22px; color: var(--gray); line-height: 1.6;">
+      ※ RX Japan（20.48 億円）・伊藤忠商事（1.92 億円）・愛知国際アリーナ（0.80 億円）など大型案件が評価・選定フェーズに揃う
+    </div>
+  </div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>11 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 12: Derivation Timeline ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">派生タイムライン</div>
+  <div class="slide-subtitle">一件の導入から枝分かれして生まれたパイプラインを時系列で示す</div>
+  <div class="slide-body">
+    <div class="placeholder-box"></div>
+  </div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>12 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 13: 6 Use Cases ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">ユースケース 6 象限</div>
+  <div class="slide-subtitle">Layer 1（導入初期）× Layer 2（アップセル）= SOM 合計 8,843 億円</div>
+  <div class="slide-body">
+    <div class="usecase-grid">
+      <div class="usecase-cell">
+        <div class="uc-layer">LAYER 1 ／ 01</div>
+        <div class="uc-title">大規模受付（入口）</div>
+        <div class="uc-desc">大規模イベント／抽選・整理券管理／避難所受付。伊藤忠・善都・日進市。</div>
+        <div class="uc-som">SOM 251 億円</div>
+      </div>
+      <div class="usecase-cell">
+        <div class="uc-layer">LAYER 1 ／ 02</div>
+        <div class="uc-title">商談会（B2Bエグゼクティブ）</div>
+        <div class="uc-desc">VIP検知・即時通知・プロフィール共有。シンフォニーM は 1 イベントで 8 億円のパイプライン創出。</div>
+        <div class="uc-som">単価 10,000円/人</div>
+      </div>
+      <div class="usecase-cell">
+        <div class="uc-layer">LAYER 1 ／ 03</div>
+        <div class="uc-title">不正防止</div>
+        <div class="uc-desc">チケット転売／パチンコ整理券／不正受験。ファイターズ。</div>
+        <div class="uc-som">SOM 184 億円</div>
+      </div>
+      <div class="usecase-cell">
+        <div class="uc-layer">LAYER 1 ／ 04</div>
+        <div class="uc-title">施設・工場入退管理</div>
+        <div class="uc-desc">工場・倉庫の入退場ログ取得。Colorcon。Layer 1 最大カテゴリ。</div>
+        <div class="uc-som">SOM 1,755 億円</div>
+      </div>
+      <div class="usecase-cell l2">
+        <div class="uc-layer">LAYER 2 ／ 05</div>
+        <div class="uc-title">行動データ取得・分析</div>
+        <div class="uc-desc">展示会回遊／パチンコ台回遊／店舗回遊。RX Japan・善都。</div>
+        <div class="uc-som">SOM 3,052 億円</div>
+      </div>
+      <div class="usecase-cell l2">
+        <div class="uc-layer">LAYER 2 ／ 06</div>
+        <div class="uc-title">顧客ID統合・CRM・VIP活用</div>
+        <div class="uc-desc">ブランド間回遊／VIP即時検知。ブランシェ。全体最大市場。</div>
+        <div class="uc-som">SOM 3,600 億円</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>13 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 15: MeeeetUp Layer 1 Traction ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">MeeeetUp 商談事例 ／ Layer 1</div>
+  <div class="slide-subtitle">入口・受付・不正防止・工場入退 ── 我々が今実際に動かしている Layer 1 案件</div>
+  <div class="slide-body">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; height: 100%;">
+      <div class="usecase-cell">
+        <div class="uc-layer">LAYER 1 ／ 大規模受付</div>
+        <div class="uc-title">イベント・コワーキング管理</div>
+        <div class="uc-desc">
+          STATION Ai（STAPS／はるたまカフェ／入館）<br>
+          静岡市 SVSA コ・クリエーションスペース<br>
+          刈谷・安城・西尾 商工会議所 交流会<br>
+          ソフトバンク Executive Briefing Program
+        </div>
+        <div class="uc-som">契約済み</div>
+      </div>
+      <div class="usecase-cell">
+        <div class="uc-layer">LAYER 1 ／ 商談会（B2B）</div>
+        <div class="uc-title">エグゼクティブ向け商談会</div>
+        <div class="uc-desc">
+          シンフォニーマーケティング IGC Harmonics<br>
+          1 イベントで約 8 億円のパイプライン創出を実現<br>
+          ID 単価 10,000 円/人（全ユースケース中 最高単価）
+        </div>
+        <div class="uc-som">契約済み</div>
+      </div>
+      <div class="usecase-cell">
+        <div class="uc-layer">LAYER 1 ／ 不正防止</div>
+        <div class="uc-title">整理券不正・チケット転売防止</div>
+        <div class="uc-desc">
+          善都（ZENT）整理券・不正防止<br>
+          北海道日本ハムファイターズ エスコンフィールド<br>
+          並び代行・転売・複数取得を構造的に排除
+        </div>
+        <div class="uc-som">評価・選定中</div>
+      </div>
+      <div class="usecase-cell">
+        <div class="uc-layer">LAYER 1 ／ 施設・工場入退</div>
+        <div class="uc-title">工場・避難所・オープンキャンパス</div>
+        <div class="uc-desc">
+          Colorcon 工場入退場ログ取得<br>
+          日進市 避難所受付・住民管理<br>
+          静岡大学／中京大学／中部大学 オープンキャンパス・出席確認
+        </div>
+        <div class="uc-som">評価・選定／課題認識</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>14 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 16: Traction ① Event ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">MeeeetUp 商談事例 ① ／ Layer 2</div>
+  <div class="slide-subtitle">Layer 1：受付効率化　→　Layer 2：行動データによるブース単価向上と解約防止</div>
+  <div class="slide-body">
+    <div class="purpose-banner">
+      <div class="p-label">目的</div>
+      <div class="p-text">定量的 ROI 説明による ブース単価向上 と 解約防止</div>
+    </div>
+    <div class="upsell-flow-with-purpose">
+      <div class="upsell-stage day1">
+        <div class="st-layer">LAYER 1</div>
+        <div class="st-label">やること ／ 入口の価値提供</div>
+        <div class="st-title">受付の省人化・時間短縮</div>
+        <ul>
+          <li>受付スタッフの削減</li>
+          <li>受付時間の短縮・効率化</li>
+          <li>来場者の本人識別</li>
+        </ul>
+        <div class="kicker">参照：InEvent 最大 70% 短縮 ／ fielddrive 受付 9 秒</div>
+      </div>
+      <div class="upsell-stage upsell">
+        <div class="st-layer">LAYER 2</div>
+        <div class="st-label">やること ／ 行動データ活用</div>
+        <div class="st-title">会場内行動データの取得と可視化</div>
+        <ul>
+          <li>会場内定点カメラで行動データを取得</li>
+          <li>属性 × 滞在スポット × 時間を定量化</li>
+          <li>出店者へ「◯名滞在 → リード ◯名獲得可能」と数字で説明</li>
+          <li>出店単価と ROI の整合を裏付けるデータを提供</li>
+          <li>定量説明により次年度の出店継続を担保</li>
+        </ul>
+        <div class="kicker">参照：Bizzabo Klik × CCW 出展者リード数 +315%</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>15 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 17: Traction ② Pachinko ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">MeeeetUp 商談事例 ② ／ Layer 2</div>
+  <div class="slide-subtitle">Layer 1：整理券不正防止・省人化　→　Layer 2：台別行動データによる売上向上</div>
+  <div class="slide-body">
+    <div class="purpose-banner">
+      <div class="p-label">目的</div>
+      <div class="p-text">台別行動データ（誰がどの台をどれだけ打ったか）の取得による 売上向上</div>
+    </div>
+    <div class="upsell-flow-with-purpose">
+      <div class="upsell-stage day1">
+        <div class="st-layer">LAYER 1</div>
+        <div class="st-label">やること ／ 入口の価値提供</div>
+        <div class="st-title">整理券不正 3 種の防止と省人化</div>
+        <ul>
+          <li>並び代行の排除</li>
+          <li>整理券の転売防止</li>
+          <li>一人当たりの複数取得防止</li>
+          <li>顔認証 ＋ 番号発行を 1 回化で公平性を担保</li>
+          <li>入口要員の省人化</li>
+        </ul>
+        <div class="kicker">ネット抽選では代替不可：若くない番号を引いた客は来店せず機会損失</div>
+      </div>
+      <div class="upsell-stage upsell">
+        <div class="st-layer">LAYER 2</div>
+        <div class="st-label">やること ／ 台別行動データ取得</div>
+        <div class="st-title">定点カメラで台別利用データを蓄積</div>
+        <ul>
+          <li>各パチンコ台に定点カメラを設置</li>
+          <li>台別・顧客別の滞在時間と頻度を行動データ化</li>
+          <li>台配置・台数・人気台のマーケティング施策に接続</li>
+          <li>既存の服装ベース追跡は「黒服問題」で失敗済み</li>
+          <li>顔認証なら解決できるという強い期待感</li>
+        </ul>
+        <div class="kicker">善都：Layer 1 10 円/回 → Layer 2 100 円/回</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>16 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 18: Traction ③ Retail HD ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">MeeeetUp 商談事例 ③ ／ Layer 2</div>
+  <div class="slide-subtitle">Layer 1：来店データの取得・統合　→　Layer 2：ブランド間回遊分析による LTV 向上</div>
+  <div class="slide-body">
+    <div class="purpose-banner">
+      <div class="p-label">目的</div>
+      <div class="p-text">ブランド間回遊データの取得と施策検証による LTV 向上</div>
+    </div>
+    <div class="upsell-flow-with-purpose">
+      <div class="upsell-stage day1">
+        <div class="st-layer">LAYER 1</div>
+        <div class="st-label">やること ／ 入口の価値提供</div>
+        <div class="st-title">来店データの確実な取得と ID 統合</div>
+        <ul>
+          <li>複数ブランド間でずれていた ID を顔認証で統合</li>
+          <li>来店瞬間にスタッフへ顧客情報を出力</li>
+          <li>顔がポイントカードとして機能</li>
+          <li>美容院:新人による常連へのカウンセリングシート事故を防止</li>
+        </ul>
+        <div class="kicker">「顔がポイントカード」として即日価値提供</div>
+      </div>
+      <div class="upsell-stage upsell">
+        <div class="st-layer">LAYER 2</div>
+        <div class="st-label">やること ／ 回遊データ × 施策検証</div>
+        <div class="st-title">ブランド間回遊の可視化と施策検証</div>
+        <ul>
+          <li>ブランド内回遊強化はホールディングス全社のコンセプト</li>
+          <li>現状クーポン効果を人手計測、検証不能</li>
+          <li>統合 ID を前提に施策を打ち、検証可能に</li>
+          <li>将来：美容師が XR グラス着用 → 入店瞬間に顧客情報出力</li>
+          <li>現在は「顔ポイントカード」でデータと顔を押さえる段階</li>
+        </ul>
+        <div class="kicker">参照：Alibaba Freshippo 坪効率 5 倍 ／ Accenture 購入意欲 91%</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>17 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 19: Delivery Styles ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">MeeeetUp 提供スタイル</div>
+  <div class="slide-subtitle">直販 × プラットフォーム連携 × API コンポーネント型で横展開する</div>
+  <div class="slide-body">
+    <div class="gtm-tracks">
+      <div class="gtm-track">
+        <div class="num">1</div>
+        <div class="t">直販</div>
+        <div class="d">営業投資 40%<br>大人数・クローズ案件を狙う<br>Founder-Led Sales</div>
+      </div>
+      <div class="gtm-track">
+        <div class="num">2</div>
+        <div class="t">プラットフォーム連携</div>
+        <div class="d">Peatix / EventHub / Salesforce / HubSpot / AIREGI / スマレジ<br>既存チャネル経由でロングテールに到達</div>
+      </div>
+      <div class="gtm-track">
+        <div class="num">3</div>
+        <div class="t">API コンポーネント型</div>
+        <div class="d">顧客既存システムへの埋め込み<br>専用端末・専用アプリ不要<br>導入摩擦を構造的に下げる</div>
+      </div>
+    </div>
+    <div style="margin-top: 60px; background: var(--light); padding: 32px 40px; border-left: 8px solid var(--main);">
+      <div style="font-size: 24px; font-weight: 900; color: var(--main); margin-bottom: 10px;">Layer 1 → Layer 2 の単価逓増</div>
+      <div style="font-size: 22px; color: var(--dark); line-height: 1.7;">
+        Layer 1（受付効率化・不正防止・入退場ログ）：単価 <strong>10〜30 円/回</strong><br>
+        Layer 2（顧客データ統合・CRM・行動データ解析）：単価 <strong>100〜300 円/回</strong>　──　約 10 倍
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>18 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 19: Lead Creation Routes ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">リード創出の 3 経路　── これまでの実績</div>
+  <div class="slide-subtitle">50+ 件のパイプラインは、この 3 つの経路から生まれてきた</div>
+  <div class="slide-body">
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; height: 100%;">
+      <div style="background: var(--light); border-top: 8px solid var(--main); padding: 36px 32px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+          <div style="width: 56px; height: 56px; background: var(--main); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 900;">A</div>
+          <div style="font-size: 26px; font-weight: 900; color: var(--dark);">ピッチ登壇・展示会出展</div>
+        </div>
+        <div style="font-size: 20px; color: var(--dark); line-height: 1.75; flex: 1;">
+          代表 髙橋一矢 がピッチ登壇や展示会ブースに立ち、<strong>顔認証の実物を顧客に見せる</strong>ことで接点を創出。登壇後・出展後に問い合わせが入るケース。
+        </div>
+        <div style="margin-top: 24px; background: #fff; border: 2px solid var(--border); padding: 20px; text-align: center;">
+          <div style="font-size: 16px; color: var(--gray); letter-spacing: 3px;">これまでのリード創出件数</div>
+          <div style="font-size: 56px; font-weight: 900; color: var(--main); line-height: 1;">X<span style="font-size: 28px; margin-left: 4px;">件</span></div>
+        </div>
+      </div>
+
+      <div style="background: var(--light); border-top: 8px solid var(--main); padding: 36px 32px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+          <div style="width: 56px; height: 56px; background: var(--main); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 900;">B</div>
+          <div style="font-size: 26px; font-weight: 900; color: var(--dark);">イベント・施設への<br>サービス提供</div>
+        </div>
+        <div style="font-size: 20px; color: var(--dark); line-height: 1.75; flex: 1;">
+          STATION Ai、静岡コ・クリエーションスペース、その他イベント・施設に実際に MeeeetUp を導入。<strong>利用者・主催者・出展者からの問い合わせ</strong>が次のリードを生む。
+        </div>
+        <div style="margin-top: 24px; background: #fff; border: 2px solid var(--border); padding: 20px; text-align: center;">
+          <div style="font-size: 16px; color: var(--gray); letter-spacing: 3px;">これまでのリード創出件数</div>
+          <div style="font-size: 56px; font-weight: 900; color: var(--main); line-height: 1;">X<span style="font-size: 28px; margin-left: 4px;">件</span></div>
+        </div>
+      </div>
+
+      <div style="background: var(--light); border-top: 8px solid var(--main); padding: 36px 32px; display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+          <div style="width: 56px; height: 56px; background: var(--main); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 900;">C</div>
+          <div style="font-size: 26px; font-weight: 900; color: var(--dark);">顧客からの紹介</div>
+        </div>
+        <div style="font-size: 20px; color: var(--dark); line-height: 1.75; flex: 1;">
+          実際に使ってくれた顧客が、<strong>大手事業者・関連企業を紹介</strong>してくれるケース。派生タイムラインの源泉。
+          <div style="margin-top: 14px; font-size: 17px; color: var(--gray); padding: 12px; background: #fff; border-left: 4px solid var(--border);">
+            例：◯◯ → ◯◯ ／ ◯◯ → ◯◯<br>※ 具体的な紹介経路は後日追記
+          </div>
+        </div>
+        <div style="margin-top: 24px; background: #fff; border: 2px solid var(--border); padding: 20px; text-align: center;">
+          <div style="font-size: 16px; color: var(--gray); letter-spacing: 3px;">これまでのリード創出件数</div>
+          <div style="font-size: 56px; font-weight: 900; color: var(--main); line-height: 1;">X<span style="font-size: 28px; margin-left: 4px;">件</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>19 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 20: Area Hub Strategy & Cluster ========== -->
+<div class="slide-wrap"><div class="slide">
+  <div class="slide-header"></div>
+  <div class="slide-title">クラスター拡大　4 つのリードソース</div>
+  <div class="slide-subtitle">ピッチ登壇　→　イベント　→　拠点　→　導入事業者　の順にクラスターが広がる</div>
+  <div class="slide-body">
+    <div class="cluster-wrap">
+      <div class="cw-title">4 クラスター ── それぞれを起点にリードが広がる</div>
+      <div class="cluster-area">
+        <div class="cluster-col">
+          <div class="c-area">CLUSTER 1</div>
+          <div class="c-hub">ピッチ登壇・展示会出展</div>
+          <svg viewBox="0 0 360 260">
+            <g fill="#dbe4ee"><circle cx="40" cy="40" r="10"/><circle cx="320" cy="50" r="10"/><circle cx="60" cy="220" r="10"/><circle cx="310" cy="215" r="10"/><circle cx="30" cy="130" r="10"/><circle cx="330" cy="130" r="10"/><circle cx="180" cy="20" r="10"/><circle cx="180" cy="245" r="10"/></g>
+            <g stroke="#2c74bb" stroke-width="1.5" stroke-dasharray="4 4" fill="none"><line x1="180" y1="130" x2="40" y2="40"/><line x1="180" y1="130" x2="320" y2="50"/><line x1="180" y1="130" x2="60" y2="220"/><line x1="180" y1="130" x2="310" y2="215"/><line x1="180" y1="130" x2="30" y2="130"/><line x1="180" y1="130" x2="330" y2="130"/><line x1="180" y1="130" x2="180" y2="20"/><line x1="180" y1="130" x2="180" y2="245"/></g>
+            <circle cx="180" cy="130" r="48" fill="#2c74bb"/>
+            <text x="180" y="126" text-anchor="middle" fill="#fff" font-size="14" font-weight="900">ピッチ</text>
+            <text x="180" y="146" text-anchor="middle" fill="#fff" font-size="14" font-weight="900">登壇・出展</text>
+          </svg>
+          <div class="c-note">代表 髙橋一矢 の登壇・出展が起点</div>
+        </div>
+        <div class="cluster-col">
+          <div class="c-area">CLUSTER 2</div>
+          <div class="c-hub">イベントでのサービス提供</div>
+          <svg viewBox="0 0 360 260">
+            <g fill="#dbe4ee"><circle cx="50" cy="45" r="10"/><circle cx="315" cy="60" r="10"/><circle cx="65" cy="220" r="10"/><circle cx="310" cy="205" r="10"/><circle cx="22" cy="130" r="10"/><circle cx="338" cy="130" r="10"/><circle cx="180" cy="22" r="10"/><circle cx="180" cy="248" r="10"/></g>
+            <g stroke="#2c74bb" stroke-width="1.5" stroke-dasharray="4 4" fill="none"><line x1="180" y1="130" x2="50" y2="45"/><line x1="180" y1="130" x2="315" y2="60"/><line x1="180" y1="130" x2="65" y2="220"/><line x1="180" y1="130" x2="310" y2="205"/><line x1="180" y1="130" x2="22" y2="130"/><line x1="180" y1="130" x2="338" y2="130"/><line x1="180" y1="130" x2="180" y2="22"/><line x1="180" y1="130" x2="180" y2="248"/></g>
+            <circle cx="180" cy="130" r="48" fill="#2c74bb"/>
+            <text x="180" y="136" text-anchor="middle" fill="#fff" font-size="16" font-weight="900">イベント</text>
+          </svg>
+          <div class="c-note">RX Japan ／ 伊藤忠 ／ シンフォニーM 等</div>
+        </div>
+        <div class="cluster-col">
+          <div class="c-area">CLUSTER 3</div>
+          <div class="c-hub">拠点でのサービス提供</div>
+          <svg viewBox="0 0 360 260">
+            <g fill="#dbe4ee"><circle cx="50" cy="50" r="10"/><circle cx="310" cy="55" r="10"/><circle cx="70" cy="210" r="10"/><circle cx="300" cy="200" r="10"/><circle cx="25" cy="130" r="10"/><circle cx="335" cy="140" r="10"/><circle cx="180" cy="30" r="10"/><circle cx="180" cy="245" r="10"/></g>
+            <g stroke="#2c74bb" stroke-width="1.5" stroke-dasharray="4 4" fill="none"><line x1="180" y1="130" x2="50" y2="50"/><line x1="180" y1="130" x2="310" y2="55"/><line x1="180" y1="130" x2="70" y2="210"/><line x1="180" y1="130" x2="300" y2="200"/><line x1="180" y1="130" x2="25" y2="130"/><line x1="180" y1="130" x2="335" y2="140"/><line x1="180" y1="130" x2="180" y2="30"/><line x1="180" y1="130" x2="180" y2="245"/></g>
+            <circle cx="180" cy="130" r="48" fill="#2c74bb"/>
+            <text x="180" y="136" text-anchor="middle" fill="#fff" font-size="18" font-weight="900">拠点</text>
+          </svg>
+          <div class="c-note">STATION Ai ／ 静岡 SVSA ／ SHIBUYA OASIS</div>
+        </div>
+        <div class="cluster-col">
+          <div class="c-area">CLUSTER 4</div>
+          <div class="c-hub">導入事業者からの紹介</div>
+          <svg viewBox="0 0 360 260">
+            <g fill="#dbe4ee"><circle cx="45" cy="60" r="10"/><circle cx="315" cy="55" r="10"/><circle cx="55" cy="215" r="10"/><circle cx="320" cy="205" r="10"/><circle cx="20" cy="130" r="10"/><circle cx="340" cy="130" r="10"/><circle cx="180" cy="15" r="10"/><circle cx="180" cy="250" r="10"/></g>
+            <g stroke="#2c74bb" stroke-width="1.5" stroke-dasharray="4 4" fill="none"><line x1="180" y1="130" x2="45" y2="60"/><line x1="180" y1="130" x2="315" y2="55"/><line x1="180" y1="130" x2="55" y2="215"/><line x1="180" y1="130" x2="320" y2="205"/><line x1="180" y1="130" x2="20" y2="130"/><line x1="180" y1="130" x2="340" y2="130"/><line x1="180" y1="130" x2="180" y2="15"/><line x1="180" y1="130" x2="180" y2="250"/></g>
+            <circle cx="180" cy="130" r="48" fill="#2c74bb"/>
+            <text x="180" y="126" text-anchor="middle" fill="#fff" font-size="14" font-weight="900">導入</text>
+            <text x="180" y="146" text-anchor="middle" fill="#fff" font-size="14" font-weight="900">事業者</text>
+          </svg>
+          <div class="c-note">既存顧客が大手・関連企業を紹介</div>
+        </div>
+      </div>
+
+      <div class="routes-engine">
+        <div class="re-item"><strong>実装方針</strong>各クラスターを並列に回し、拠点とイベントを起点にピッチ接点と顧客紹介を重ねる ── 1 接点が次の接点を連鎖的に生む構造を作る</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer"><span class="brand">MeeeetUp</span><span>20 / 21</span></div>
+</div></div>
+
+<!-- ========== Slide 21: Closing ========== -->
+<div class="slide-wrap"><div class="slide divider">
+  <div style="position:absolute; top:60px; left:160px; right:160px; font-size:28px; letter-spacing:6px; color:#9fd2ef;">CLOSING</div>
+  <div style="position:absolute; top:110px; left:160px; right:160px; font-size:70px; font-weight:900; color:#fff; line-height:1.2;">
+    リアル空間のデータ保持者になる。
+  </div>
+  <div style="position:absolute; top:240px; left:160px; right:160px; font-size:24px; color:#c9e7f5; line-height:1.6;">
+    Phase 2 の空白期間に ID を積み上げ、Layer 1 → Layer 2 の経済圏をクラスター拡大で再現する。
+  </div>
+
+  <div style="position:absolute; top:330px; left:160px; right:160px; bottom:120px;">
+    <div class="recap-grid">
+      <div class="recap-box">
+        <div class="r-num">01　他国での導入事例</div>
+        <div class="r-title">Layer 1 と Layer 2 が実証済み</div>
+        <div class="r-body">Layer 1：PopID／Toss FacePay／InEvent／Marriott 中国で時間短縮効果が実証<br>Layer 2：Alibaba Freshippo 坪効率 5 倍／Bizzabo 出展者リード +315%／PopID 客単価 +4.5%</div>
+        <div class="r-kicker">経済圏は既に証明されている</div>
+      </div>
+      <div class="recap-box">
+        <div class="r-num">02　市場機会</div>
+        <div class="r-title">規制強化 × Phase 2 の空白期間</div>
+        <div class="r-body">2026 年に日本個情法・EU AI Act・米州法が同期施行／BIPA 系和解 $1.48B／既存プレイヤーは過去データの巻き戻し中</div>
+        <div class="r-kicker">大手が構造的に入れない今が勝負</div>
+      </div>
+      <div class="recap-box">
+        <div class="r-num">03　スコープ</div>
+        <div class="r-title">リアル対面 × 軽認可</div>
+        <div class="r-body">現実環境でなりすましが成立しない領域に意図的に絞る／Anti-ICP まで明示／規制強化が追い風になる設計</div>
+        <div class="r-kicker">触れない領域を決めているから速い</div>
+      </div>
+      <div class="recap-box">
+        <div class="r-num">04　勝ち筋</div>
+        <div class="r-title">(大人数)×(低摩擦)×(速いクローズ)</div>
+        <div class="r-body">大型アンカー案件で遅く動く大手と戦わず、ID 獲得スピードで Phase 3 までに序列を作る</div>
+        <div class="r-kicker">"使える ID 数" で未来が決まる</div>
+      </div>
+      <div class="recap-box">
+        <div class="r-num">05　実績</div>
+        <div class="r-title">50+ 件のパイプライン</div>
+        <div class="r-body">ユニーク 27 社／6 業界／見込 46.65 億円／契約済 9 件／大型案件が評価・選定フェーズに揃う／Layer 1→2 のアップセル計画が具体化</div>
+        <div class="r-kicker">入館システムではない、共通 ID の証拠</div>
+      </div>
+      <div class="recap-box">
+        <div class="r-num">06　クラスター拡大</div>
+        <div class="r-title">4 クラスターで連鎖的に広げる</div>
+        <div class="r-body">ピッチ登壇 → イベント → 拠点 → 導入事業者 ── 1 接点が次の接点を生む構造を作る</div>
+        <div class="r-kicker">拠点で実物を見せ、紹介で広げる</div>
+      </div>
+    </div>
+  </div>
+
+</div></div>
+
+<div class="nav-index">
+  21 slides ／ 比例縮小モード
+</div>
+
+</body>
+</html>
